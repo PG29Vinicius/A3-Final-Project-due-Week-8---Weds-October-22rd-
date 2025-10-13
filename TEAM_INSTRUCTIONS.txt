@@ -1,0 +1,20 @@
+We need 3 scripts:
+
+Deck.cs
+Card.cs
+Program.cs
+
+//SpecialPowers.cs -> change this name please
+
+========== FELIPE ==========
+
+
+
+
+========== VINICIUS ==========
+
+
+
+
+========== TYLER ==========
+
