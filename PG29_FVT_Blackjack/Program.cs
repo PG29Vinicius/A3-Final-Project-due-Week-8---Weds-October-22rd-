@@ -112,7 +112,7 @@ namespace PG29_FVT_Blackjack
                 {
                     Console.Clear();
                     DealerHand.Add(playingDeck.ElementAt(0));
-                    dealerTotal = dealerTotal + playingDeck.ElementAt(0).getvalue();
+                    dealerTotal = dealerTotal + playingDeck.ElementAt(0).getValue();
                     playingDeck.RemoveAt(0);
                     printList(DealerHand);
                     Console.ReadKey();
