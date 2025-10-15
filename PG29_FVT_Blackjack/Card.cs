@@ -12,6 +12,7 @@ namespace PG29_FVT_Blackjack
         private int mSuit;
         private int mValue;
         private string mColor = "";
+        public bool IsFaceCard;
 
         public Card(int suit, int value, string color)
         {

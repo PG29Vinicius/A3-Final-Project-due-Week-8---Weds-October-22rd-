@@ -50,7 +50,7 @@ namespace PG29_FVT_Blackjack
 
                 // Getting the total value for the players and dealers hand
                 dealerTotal = DealerHand.ElementAt(0).getValue() + DealerHand.ElementAt(1).getValue();
-                Player1Hand = Player1Hand.ElementAt(0).getValue() + Player1Hand.ElementAt(1).getValue();
+                PlayerTotal = Player1Hand.ElementAt(0).getValue() + Player1Hand.ElementAt(1).getValue();
 
                 // looping and removing the first card 
                 for (int i = 0; i < 4; i++)
