@@ -29,9 +29,9 @@ namespace PG29_FVT_Blackjack
         {
             return mValue;
         }
-        public string getColor() 
-        { 
-            return mColor;    
+        public string getColor()
+        {
+            return mColor;
         }
 
         //Setters
@@ -52,9 +52,18 @@ namespace PG29_FVT_Blackjack
         //method to print the cards
         public void printCard()
         {
-            Console.WriteLine("Value: " + mValue);
-            Console.WriteLine("Suit: " + mSuit);
-            Console.WriteLine("Color: " + mColor);
+            Console.WriteLine("Card: " + mValue);
+        }
+        public void isFaceCard()
+        {
+            if (mValue < 10 && mValue != 14)
+            {
+                mValue = 10;
+            }
+            if (mValue == 14)
+            {
+                mValue = 11;
+            }
         }
     }
 }

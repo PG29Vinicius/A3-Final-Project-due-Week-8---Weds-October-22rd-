@@ -1,5 +1,4 @@
-﻿
-namespace PG29_FVT_Blackjack
+﻿namespace PG29_FVT_Blackjack
 {
     using System.Reflection.Metadata;
     using System.Runtime.CompilerServices;
@@ -23,7 +22,7 @@ namespace PG29_FVT_Blackjack
 
             // Creating default variables
             int minNumCards = 20;
-            bool isWinner = false;
+            bool isRoundOver = false;
             int dealerTotal = 0;
             int PlayerTotal = 0;
             float Money = 100;
@@ -40,7 +39,7 @@ namespace PG29_FVT_Blackjack
             List<Card> DealerHand = new List<Card>();
 
 
-            while (playingDeck.Count > minNumCards && !isWinner && Money >= 0)
+            while (playingDeck.Count > minNumCards && Money >= 0 && !isRoundOver)
             {
                 // Adding Cards to the players and the dealers hand
                 DealerHand.Add(playingDeck.ElementAt(0));
@@ -58,71 +57,100 @@ namespace PG29_FVT_Blackjack
                     playingDeck.RemoveAt(i);
                 }
                 // Displaying the UI for the player and dealers hand
-                Console.WriteLine("You have $" + Money + "Dollars");
+                Console.WriteLine("You have $" + Money + " Dollars");
                 Console.WriteLine("How much would you like to bet? ");
                 string userBet = Console.ReadLine();
                 BetAmout = float.Parse(userBet);
+                if (BetAmout > Money)
+                {
+                    Console.WriteLine("You dont have that much money try again");
+                    return;
+                }
 
                 Console.WriteLine("These are your cards: ");
 
                 Player1Hand.ElementAt(0).printCard();
                 Player1Hand.ElementAt(1).printCard();
+                Console.Write("Your total is: " + PlayerTotal);
                 Console.WriteLine();
                 Console.WriteLine("The dealers first card is: ");
                 DealerHand.ElementAt(0).printCard();
 
+                // Checking for a players blackjack 
+                if (PlayerTotal == 21)
+                {
+                    isRoundOver = true;
+                    Console.WriteLine("BLACKJACK YOU WIN!");
+                    Money = (float)(BetAmout * 1.5);
+                    return;
+                }
+                // If the players total is over 21 they bust and loss their bet
+                else if (PlayerTotal > 21)
+                {
+                    isRoundOver = true;
+                    Console.WriteLine("You busted. The dealer wins");
+                    Money = Money - BetAmout;
+                    return;
+                }
                 Console.WriteLine("Would you like to hit or stand? enter H for hit or S for stand");
-                String userInput = Console.ReadLine();
-                userInput.ToUpper();
+                String userInput = Console.ReadLine().ToUpper();
 
                 // Checking if the player wants to hit or stand
-
                 while (!userInput.Equals("H") && !userInput.Equals("S"))
                 {
                     Console.WriteLine("Type a valid answer. Would you like to hit or stand? enter H for hit or S for stand");
                     userInput = Console.ReadLine();
                     userInput.ToUpper();
                 }
+                if (userInput.Equals("S"))
+                {
+                    Console.WriteLine("You choose to stand your total is: " + PlayerTotal);
+                    Console.Write("Your Dealers first card is: ");
+                    printList(DealerHand);
+                }
 
                 // If the player wants to hit and isnt over 21 give an extra card then ask again
-                while (userInput.Equals("H") && PlayerTotal < 21 && !isWinner)
+                while (userInput.Equals("H") && PlayerTotal < 21 && !isRoundOver)
                 {
-                    Console.Clear();
                     Player1Hand.Add(playingDeck.ElementAt(0));
                     PlayerTotal = PlayerTotal + playingDeck.ElementAt(0).getValue();
-                    playingDeck.RemoveAt(0);
                     printList(Player1Hand);
+                    Console.WriteLine("Your new total is : " + PlayerTotal);
 
                     Console.WriteLine("Would you like to hit or stand? enter H for hit or S for stand");
                     userInput = Console.ReadLine();
                     userInput.ToUpper();
-
-                    // If the players total is over 21 they bust and loss their bet
                     if (PlayerTotal > 21)
                     {
-                        isWinner = true;
+                        isRoundOver = true;
                         Console.WriteLine("You busted. The dealer wins");
                         Money = Money - BetAmout;
+                        return;
                     }
-
                 }
 
                 // If they stand the dealer checks if their total is under 17 and adds another card until it is or busts
-                while (userInput.Equals("S") && dealerTotal < 17 && !isWinner)
+                while (userInput.Equals("S") && dealerTotal < 17 && !isRoundOver)
                 {
-                    Console.Clear();
                     DealerHand.Add(playingDeck.ElementAt(0));
                     dealerTotal = dealerTotal + playingDeck.ElementAt(0).getValue();
-                    playingDeck.RemoveAt(0);
-                    printList(DealerHand);
-                    Console.ReadKey();
+                    Console.Write("The dealers new cards are: ");
+
+                    Console.WriteLine("The dealers total is : " + dealerTotal);
+                }
+                // Checking for a players blackjack 
+                if (PlayerTotal == 21)
+                {
+                    isRoundOver = true;
+                    Console.WriteLine("BLACKJACK YOU WIN!");
+                    Money = (float)(BetAmout * 1.5);
+                    return;
                 }
 
                 // Checking if the player loses and the dealer didn't bust
                 if (dealerTotal > PlayerTotal && dealerTotal < 22)
                 {
-                    Console.Clear();
-                    isWinner = true;
+                    isRoundOver = true;
                     Console.WriteLine("Dealer wins");
                     Money = Money - BetAmout;
 
@@ -131,18 +159,16 @@ namespace PG29_FVT_Blackjack
                 // Checking if the player busted 
                 else if (PlayerTotal > 21)
                 {
-                    Console.Clear();
-                    isWinner = true;
+                    isRoundOver = true;
                     Console.WriteLine("Dealer wins");
                     Money = Money - BetAmout;
-
                 }
 
                 // Checking if the dealer busted
                 else if (dealerTotal > 21)
                 {
-                    Console.Clear();
-                    isWinner = true;
+                    isRoundOver = true;
+                    Console.WriteLine("Dealers total is over 21 their Total is: " + dealerTotal);
                     Console.WriteLine("Dealer busted you WIN! ");
                     Money = BetAmout + BetAmout;
                 }
@@ -150,25 +176,14 @@ namespace PG29_FVT_Blackjack
                 // Checking if you pushed
                 else if (dealerTotal == PlayerTotal)
                 {
-                    Console.Clear();
-                    isWinner = true;
+                    isRoundOver = true;
                     Console.WriteLine("Push you get your money back");
                 }
-
-                // Checking for a players blackjack 
-                else if (PlayerTotal == 21)
-                {
-                    Console.Clear();
-                    isWinner = true;
-                    Console.WriteLine("BLACKJACK YOU WIN!");
-                    Money = (float)(BetAmout * 1.5);
-                }
-                Console.ReadKey();
             }
             // Checking if the player runs out of money and if they want to play again after
             if (Money <= 0)
             {
-                Console.WriteLine("You lost alllll your money would you like to get more and play again('y/n')");
+                Console.WriteLine("You lost all your money would you like to get more and play again('y/n')");
                 string userResponse = Console.ReadLine();
                 if (userResponse == "y")
                 {
@@ -180,15 +195,13 @@ namespace PG29_FVT_Blackjack
                 }
             }
         }
-        
-            // Printing the list of the cards 
+        // Printing the list of the cards 
         private static void printList(List<Card> cardList)
         {
-            for(int i = 0; i < cardList.Count; i++)
+            for (int i = 0; i < cardList.Count; i++)
             {
                 cardList.ElementAt(i).printCard();
             }
         }
-        
     }
 }

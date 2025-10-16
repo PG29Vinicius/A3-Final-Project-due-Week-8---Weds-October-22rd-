@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +15,7 @@ namespace PG29_FVT_Blackjack
         // Basic constructor for a default deck of 53 cards
         public Deck()
         {
-            deckSize = 53;
+            deckSize = 52;
             currentDeck = new List<Card>(deckSize);
         }
 
@@ -37,7 +37,7 @@ namespace PG29_FVT_Blackjack
         {
             // Temporary card variable to create new cards
             Card newCard;
-            // Loop to create 53 cards and add them to the current deck
+            // Loop to create 52 cards and add them to the current deck
             for (int i = 0; i <= 52; i++)
             {
                 // The first 13 cards are of suit 1, the next 13 of suit 2, and so on
@@ -52,7 +52,7 @@ namespace PG29_FVT_Blackjack
                         newCard = new Card(1, i + 1, "red");
                     }
                 }
-                else if(i < 26)
+                else if (i < 26)
                 {
                     if (i == 13)
                     {
@@ -63,9 +63,9 @@ namespace PG29_FVT_Blackjack
                         newCard = new Card(2, i - 12, "red");
                     }
                 }
-                else if(i < 39)
+                else if (i < 39)
                 {
-                    if(i == 26)
+                    if (i == 26)
                     {
                         newCard = new Card(3, 14, "red");
                     }
