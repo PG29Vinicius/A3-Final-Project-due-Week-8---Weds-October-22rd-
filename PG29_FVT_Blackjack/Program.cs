@@ -40,7 +40,7 @@ namespace PG29_FVT_Blackjack
             List<Card> DealerHand = new List<Card>();
 
 
-            while (playingDeck.Count > minNumCards && !isWinner)
+            while (playingDeck.Count > minNumCards && !isWinner && Money >= 0)
             {
                 // Adding Cards to the players and the dealers hand
                 DealerHand.Add(playingDeck.ElementAt(0));
@@ -164,6 +164,20 @@ namespace PG29_FVT_Blackjack
                     Money = (float)(BetAmout * 1.5);
                 }
                 Console.ReadKey();
+            }
+            // Checking if the player runs out of money and if they want to play again after
+            if (Money >= 0)
+            {
+                Console.WriteLine("You lost alllll your money would you like to get more and play again('y/n')");
+                string userResponse = Console.ReadLine();
+                if (userResponse == "y")
+                {
+                    Money = 100;
+                }
+                else
+                {
+                    return;
+                }
             }
         }
         
