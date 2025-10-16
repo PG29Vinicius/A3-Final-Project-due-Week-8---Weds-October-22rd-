@@ -112,7 +112,7 @@ namespace PG29_FVT_Blackjack
             {
                 if (currentDeck[i].IsFaceCard)
                 {
-                    currentDeck[i].changeValue(10);
+                    currentDeck[i].setValue(10);
                 }
             }
         }

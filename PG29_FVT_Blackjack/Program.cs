@@ -79,7 +79,7 @@ namespace PG29_FVT_Blackjack
 
                 while (!userInput.Equals("H") && !userInput.Equals("S"))
                 {
-                    Console.WriteLine("Would you like to hit or stand? enter H for hit or S for stand");
+                    Console.WriteLine("Type a valid answer. Would you like to hit or stand? enter H for hit or S for stand");
                     userInput = Console.ReadLine();
                     userInput.ToUpper();
                 }
@@ -166,7 +166,7 @@ namespace PG29_FVT_Blackjack
                 Console.ReadKey();
             }
             // Checking if the player runs out of money and if they want to play again after
-            if (Money >= 0)
+            if (Money <= 0)
             {
                 Console.WriteLine("You lost alllll your money would you like to get more and play again('y/n')");
                 string userResponse = Console.ReadLine();
