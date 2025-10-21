@@ -18,7 +18,7 @@
             Deck gameDeck = new Deck();
             List<Card> playingDeck;
             gameDeck.makeDefaultDeck();
-            gameDeck.resetFaceCards();
+            //gameDeck.resetFaceCards();
 
             // Creating default variables
             int minNumCards = 20;
@@ -39,13 +39,14 @@
             List<Card> DealerHand = new List<Card>();
 
 
-            while (playingDeck.Count > minNumCards && Money >= 0 && !isRoundOver)
+            while (/*playingDeck.Count > minNumCards && */Money >= 0 && !isRoundOver)
             {
+                Random random = new Random();
                 // Adding Cards to the players and the dealers hand
-                DealerHand.Add(playingDeck.ElementAt(0));
-                Player1Hand.Add(playingDeck.ElementAt(1));
-                DealerHand.Add(playingDeck.ElementAt(2));
-                Player1Hand.Add(playingDeck.ElementAt(3));
+                DealerHand.Add(playingDeck.ElementAt(random.Next(0, 52)));
+                Player1Hand.Add(playingDeck.ElementAt(random.Next(0, 52)));
+                DealerHand.Add(playingDeck.ElementAt(random.Next(0, 52)));
+                Player1Hand.Add(playingDeck.ElementAt(random.Next(0, 52)));
 
                 // Getting the total value for the players and dealers hand
                 dealerTotal = DealerHand.ElementAt(0).getValue() + DealerHand.ElementAt(1).getValue();
@@ -73,7 +74,7 @@
                 Player1Hand.ElementAt(1).printCard();
                 Console.Write("Your total is: " + PlayerTotal);
                 Console.WriteLine();
-                Console.WriteLine("The dealers first card is: ");
+                Console.Write("The dealers first card is: ");
                 DealerHand.ElementAt(0).printCard();
 
                 // Checking for a players blackjack 
@@ -105,8 +106,9 @@
                 if (userInput.Equals("S"))
                 {
                     Console.WriteLine("You choose to stand your total is: " + PlayerTotal);
-                    Console.Write("Your Dealers first card is: ");
+                    Console.Write($"Your Dealers cards are: ");
                     printList(DealerHand);
+                    
                 }
 
                 // If the player wants to hit and isnt over 21 give an extra card then ask again
@@ -135,7 +137,7 @@
                     DealerHand.Add(playingDeck.ElementAt(0));
                     dealerTotal = dealerTotal + playingDeck.ElementAt(0).getValue();
                     Console.Write("The dealers new cards are: ");
-
+                    printList(DealerHand);
                     Console.WriteLine("The dealers total is : " + dealerTotal);
                 }
                 // Checking for a players blackjack 
@@ -153,7 +155,8 @@
                     isRoundOver = true;
                     Console.WriteLine("Dealer wins");
                     Money = Money - BetAmout;
-
+                    Console.WriteLine($"You lost ${BetAmout}. You now have ${Money} dumbass");
+                    return;
                 }
 
                 // Checking if the player busted 
