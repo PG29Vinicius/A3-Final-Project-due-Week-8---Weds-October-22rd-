@@ -18,11 +18,11 @@
         }
         static void PlayActions()
         {
-            Console.WriteLine("1: Switch one random one of your cards with the dealers hidden card");
-            Console.WriteLine("2: Randomly double either your score or the dealers");
+            Console.WriteLine("1: Switch one random one of your cards with the dealers hidden card only once");
+            Console.WriteLine("2: Randomly double either your total or the dealers total");
             Console.WriteLine("3: Remove one of your cards randomly for another from the deck");
-            Console.WriteLine("4: Hit('H')");
-            Console.WriteLine("5: Stand('S')");
+            Console.WriteLine("4: Hit");
+            Console.WriteLine("5: Stand");
         }
 
         private static void PlayBlackJack()
@@ -35,6 +35,7 @@
             // Game variables
             float money = 100;
             Random random = new Random();
+            bool isRoundOver = false;
 
             while (money > 0)
             {
@@ -55,7 +56,7 @@
                     Console.WriteLine("Invalid bet. Please enter an amount between $1 and $" + money);
                 }
 
-                // Deal initial cards (random from deck, duplicates allowed)
+                // Deal initial cards (random from deck, duplicates allowed
                 List<Card> playerHand = new List<Card>();
                 List<Card> dealerHand = new List<Card>();
 
@@ -90,48 +91,82 @@
                 bool playerBusted = false;
                 string userInput = "";
 
-                while (playerTotal < 21)
+                while (playerTotal < 21 && !isRoundOver)
                 {
                     PlayActions();
 
                     userInput = Console.ReadLine();
-                    int userResponse = Convert.ToInt32(userInput);
+                    int userResponse = int.Parse(userInput);
+                    int playerRand = 0;
+
                     switch(userResponse){
                         case 1:
+                            
+                            playerRand = random.Next(0, playerHand.Count);
 
+                            playerHand.Add(dealerHand[1]);
+                            dealerHand.Add(playerHand[playerRand]);
+                            dealerHand.RemoveAt(1);
+                            playerHand.RemoveAt(0);
+
+                            playerTotal = CalculateHandValue(playerHand);
+                            dealerTotal = CalculateHandValue(dealerHand);
+
+                            Console.WriteLine("Your new total is: " + playerTotal);
+                            Console.WriteLine("Dealers new total is: " + dealerTotal);
+
+                            Console.WriteLine("Your cards: ");
+                            PrintList(playerHand);
+                            Console.WriteLine("Dealers cards: ");
+                            PrintList(dealerHand);
+
+                            isRoundOver = true;
+                            break;
                         case 2:
-
+                            playerRand = random.Next(0, 2);
+                            if(playerRand == 1)
+                            {
+                                playerTotal = playerTotal * 2;
+                                Console.WriteLine("Your new total is: " + playerTotal);
+                            }
+                            else
+                            {
+                                dealerTotal = dealerTotal * 2;
+                                Console.WriteLine("Dealers new total is: " + dealerTotal);
+                            }
+                                isRoundOver = true;
+                            break;
                         case 3:
+                            playerRand = random.Next(0, playerHand.Count);
+                            playerHand.RemoveAt(playerRand);
+                            playerHand.Add(playingDeck[random.Next(0, 52)]);
+                            playerTotal = CalculateHandValue(playerHand);
 
-                        case 4:
-                            Console.Write("Invalid input. Enter H for hit or S for stand: ");
-                            userInput = Console.ReadLine().ToUpper();
+                            Console.WriteLine("Your new total is: " + playerTotal);
+                            Console.WriteLine("Your cards: ");
+                            PrintList(playerHand);
+                            isRoundOver = true;
+                            break;
+                        case 4: 
+                            // Player hits - get random card
+                            playerHand.Add(playingDeck[random.Next(0, 52)]);
+                            playerTotal = CalculateHandValue(playerHand);
+
+                            Console.WriteLine("Your new total is: " + playerTotal);
+                            PrintList(playerHand);
                             break;
                         case 5:
-                         
-                        case 6:
+                            Console.WriteLine("You choose to stand with " + playerTotal);
+                            PrintList(playerHand);
+                            isRoundOver = true;
                             break;
                             
                     }
 
-                    while (userInput != "H" && userInput != "S")
-                    {
-                       
-                    }
-
-                    if (userInput == "S")
-                    {
-                        Console.WriteLine("You choose to stand with " + playerTotal);
-                        break;
-                    }
-
-                    // Player hits - get random card
-                    playerHand.Add(playingDeck[random.Next(0, 52)]);
-                    playerTotal = CalculateHandValue(playerHand);
-
-                    Console.WriteLine("\nYour cards: ");
-                    PrintList(playerHand);
-                    Console.WriteLine("Your new total: " + playerTotal);
+                    
+                    //Console.WriteLine("\nYour cards: ");
+                    //PrintList(playerHand);
+                    //Console.WriteLine("Your new total: " + playerTotal);
 
                     if (playerTotal > 21)
                     {
@@ -139,11 +174,13 @@
                         Console.WriteLine("\nBUST! You went over 21!");
                         money -= betAmount;
                         Console.WriteLine("You lost $" + betAmount + ". You now have $" + money);
+                        isRoundOver = false;
                         break;
                     }
                     else if (playerTotal == 21)
                     {
                         Console.WriteLine("\nYou hit 21! Perfect!");
+                        isRoundOver = false;
                         break;
                     }
                 }
@@ -169,6 +206,7 @@
                     Console.WriteLine("Dealer's cards: ");
                     PrintList(dealerHand);
                     Console.WriteLine("Dealer's total: " + dealerTotal);
+                    isRoundOver = false;
                 }
 
                 // Determine winner
@@ -181,27 +219,33 @@
                     Console.WriteLine("\n Dealer busted! YOU WIN!");
                     money += betAmount;
                     Console.WriteLine("You won $" + betAmount + "! You now have $" + money);
+                    isRoundOver = false;
                 }
                 else if (playerTotal > dealerTotal)
                 {
                     Console.WriteLine("\n YOU WIN! ");
                     money += betAmount;
                     Console.WriteLine("You won $" + betAmount + "! You now have $" + money);
+                    isRoundOver = false;
                 }
                 else if (dealerTotal > playerTotal)
                 {
                     Console.WriteLine("\n Dealer wins!");
                     money -= betAmount;
                     Console.WriteLine("You lost $" + betAmount + ". You now have $" + money);
+                    isRoundOver = false;
                 }
                 else
                 {
                     Console.WriteLine("\n PUSH! It's a tie!");
                     Console.WriteLine("You keep your bet. You still have $" + money);
+                    isRoundOver = false;
                 }
+                
                 Console.WriteLine("Press [ENTER] to continue...");
                 Console.ReadLine();
                 Console.Clear();
+               
             }
 
             // Player ran out of money
