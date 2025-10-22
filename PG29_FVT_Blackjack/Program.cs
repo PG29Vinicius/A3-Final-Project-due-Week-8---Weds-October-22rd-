@@ -6,10 +6,15 @@
     using System.Linq;
     internal class Program
     {
+        static bool isGameOver = false;
         static void Main(string[] args)
         {
-            // Calling the BlackJack game function
-            PlayBlackJack();
+
+            while (!isGameOver)
+            {
+                // Calling the BlackJack game function
+                PlayBlackJack();
+            }
         }
 
         private static void PlayBlackJack()
@@ -40,8 +45,10 @@
             List<Card> DealerHand = new List<Card>();
 
 
-            while (/*playingDeck.Count > minNumCards && */Money >= 0 && !isRoundOver)
+            //while (/*playingDeck.Count > minNumCards && */Money > 0 && !isRoundOver)
+            while (/*playingDeck.Count > minNumCards && */Money > 0)
             {
+                
                 Random random = new Random();
                 // Adding Cards to the players and the dealers hand
                 DealerHand.Add(playingDeck.ElementAt(random.Next(0, 52)));
@@ -84,16 +91,9 @@
                     isRoundOver = true;
                     Console.WriteLine("BLACKJACK YOU WIN!");
                     Money = (float)(BetAmout * 1.5);
-                    return;
+                    continue;
                 }
-                // If the players total is over 21 they bust and loss their bet
-                else if (PlayerTotal > 21)
-                {
-                    isRoundOver = true;
-                    Console.WriteLine("You busted. The dealer wins");
-                    Money = Money - BetAmout;
-                    return;
-                }
+                
                 Console.WriteLine("Would you like to hit or stand? enter H for hit or S for stand");
                 String userInput = Console.ReadLine().ToUpper();
 
@@ -113,8 +113,11 @@
                 }
 
                 // If the player wants to hit and isnt over 21 give an extra card then ask again
-                while (userInput.Equals("H") && PlayerTotal < 21 && !isRoundOver)
+                //while (userInput.Equals("H") && PlayerTotal < 21 && !isRoundOver)
+                //while (userInput.Equals("H") && PlayerTotal < 21)
+                while (userInput.Equals("H"))
                 {
+
                     deckIndex = random.Next(0,52);
                     //Player1Hand.Add(playingDeck.ElementAt(0));
                     //PlayerTotal = PlayerTotal + playingDeck.ElementAt(0).getValue();
@@ -131,12 +134,15 @@
                         isRoundOver = true;
                         Console.WriteLine("You busted. The dealer wins");
                         Money = Money - BetAmout;
-                        return;
+                        Console.WriteLine($"You lost ${BetAmout}. You now have ${Money}");
+                        continue;
                     }
+
                 }
 
                 // If they stand the dealer checks if their total is under 17 and adds another card until it is or busts
-                while (userInput.Equals("S") && dealerTotal < 17 && !isRoundOver)
+                //while (userInput.Equals("S") && dealerTotal < 17 && !isRoundOver)
+                while (userInput.Equals("S") && dealerTotal < 17)
                 {
                     deckIndex = random.Next(0, 52);
                     //DealerHand.Add(playingDeck.ElementAt(0));
@@ -153,7 +159,7 @@
                     isRoundOver = true;
                     Console.WriteLine("BLACKJACK YOU WIN!");
                     Money = (float)(BetAmout * 1.5);
-                    return;
+                    continue;
                 }
 
                 // Checking if the player loses and the dealer didn't bust
@@ -163,7 +169,8 @@
                     Console.WriteLine("Dealer wins");
                     Money = Money - BetAmout;
                     Console.WriteLine($"You lost ${BetAmout}. You now have ${Money} dumbass");
-                    return;
+                    
+                    continue;
                 }
 
                 // Checking if the player busted 
@@ -172,6 +179,7 @@
                     isRoundOver = true;
                     Console.WriteLine("Dealer wins");
                     Money = Money - BetAmout;
+                    Console.WriteLine($"You lost ${BetAmout}. You now have ${Money} dumbass");
                 }
 
                 // Checking if the dealer busted
@@ -189,18 +197,25 @@
                     isRoundOver = true;
                     Console.WriteLine("Push you get your money back");
                 }
+                
+                
+                Player1Hand.Clear();
+                DealerHand.Clear();
             }
             // Checking if the player runs out of money and if they want to play again after
             if (Money <= 0)
             {
+
                 Console.WriteLine("You lost all your money would you like to get more and play again('y/n')");
                 string userResponse = Console.ReadLine();
                 if (userResponse == "y")
                 {
+                    isGameOver = false;
                     Money = 100;
                 }
                 else
                 {
+                    isGameOver = true;
                     return;
                 }
             }
