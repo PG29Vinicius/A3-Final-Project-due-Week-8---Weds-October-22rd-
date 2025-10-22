@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 namespace PG29_FVT_Blackjack
 {
-    // FELIPE
     internal class Card
     {
         private string mName;
-        private int mSuit;
+        private char mSuit;
         private int mValue;
         private string mColor = "";
         public bool IsFaceCard;
 
-        public Card(int suit, int value, string color, string name)
+        public Card(char suit, int value, string color, string name)
         {
             mSuit = suit;
             mValue = value;
@@ -23,7 +22,7 @@ namespace PG29_FVT_Blackjack
             mName = name;
         }
         //Getters
-        public int getSuit()
+        public char getSuit()
         {
             return mSuit;
         }
@@ -49,7 +48,7 @@ namespace PG29_FVT_Blackjack
         {
             mValue = value;
         }
-        public void setSuit(int suit)
+        public void setSuit(char suit)
         {
             mSuit = suit;
         }
@@ -61,19 +60,7 @@ namespace PG29_FVT_Blackjack
         //method to print the cards
         public void printCard()
         {
-            //Console.WriteLine("Card: " + mValue + " of " + mName);
-            Console.WriteLine($"Card: {mValue} of {mName}");
-        }
-        public void isFaceCard()
-        {
-            if (mValue < 10 && mValue != 14)
-            {
-                mValue = 10;
-            }
-            if (mValue == 14)
-            {
-                mValue = 11;
-            }
+            Console.WriteLine($"Card: {mName}{mSuit}");
         }
     }
 }
