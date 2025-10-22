@@ -104,7 +104,9 @@
                         case 3:
 
                         case 4:
-
+                            Console.Write("Invalid input. Enter H for hit or S for stand: ");
+                            userInput = Console.ReadLine().ToUpper();
+                            break;
                         case 5:
                          
                         case 6:
@@ -114,8 +116,7 @@
 
                     while (userInput != "H" && userInput != "S")
                     {
-                        Console.Write("Invalid input. Enter H for hit or S for stand: ");
-                        userInput = Console.ReadLine().ToUpper();
+                       
                     }
 
                     if (userInput == "S")
