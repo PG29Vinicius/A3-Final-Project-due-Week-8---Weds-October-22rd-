@@ -9,16 +9,18 @@ namespace PG29_FVT_Blackjack
     // FELIPE
     internal class Card
     {
+        private string mName;
         private int mSuit;
         private int mValue;
         private string mColor = "";
         public bool IsFaceCard;
 
-        public Card(int suit, int value, string color)
+        public Card(int suit, int value, string color, string name)
         {
             mSuit = suit;
             mValue = value;
             mColor = color;
+            mName = name;
         }
         //Getters
         public int getSuit()
@@ -33,13 +35,16 @@ namespace PG29_FVT_Blackjack
         {
             return mColor;
         }
+        public string getName()
+        {
+            return mName;
+        }
 
         //Setters
         public void setColor(string color)
         {
             mColor = color;
         }
-
         public void setValue(int value)
         {
             mValue = value;
@@ -48,11 +53,16 @@ namespace PG29_FVT_Blackjack
         {
             mSuit = suit;
         }
+        public void setName(string name)
+        {
+            mName = name;
+        }
 
         //method to print the cards
         public void printCard()
         {
-            Console.WriteLine("Card: " + mValue);
+            //Console.WriteLine("Card: " + mValue + " of " + mName);
+            Console.WriteLine($"Card: {mValue} of {mName}");
         }
         public void isFaceCard()
         {
