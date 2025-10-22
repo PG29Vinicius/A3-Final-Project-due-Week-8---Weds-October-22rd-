@@ -16,6 +16,14 @@
                 PlayBlackJack();
             }
         }
+        static void PlayActions()
+        {
+            Console.WriteLine("1: Switch one random one of your cards with the dealers hidden card");
+            Console.WriteLine("2: Randomly double either your score or the dealers");
+            Console.WriteLine("3: Remove one of your cards randomly for another from the deck");
+            Console.WriteLine("4: Hit('H')");
+            Console.WriteLine("5: Stand('S')");
+        }
 
         private static void PlayBlackJack()
         {
@@ -84,8 +92,25 @@
 
                 while (playerTotal < 21)
                 {
-                    Console.Write("\nWould you like to Hit or Stand?  (H/S)");
-                    userInput = Console.ReadLine().ToUpper();
+                    PlayActions();
+
+                    userInput = Console.ReadLine();
+                    int userResponse = Convert.ToInt32(userInput);
+                    switch(userResponse){
+                        case 1:
+
+                        case 2:
+
+                        case 3:
+
+                        case 4:
+
+                        case 5:
+                         
+                        case 6:
+                            break;
+                            
+                    }
 
                     while (userInput != "H" && userInput != "S")
                     {
