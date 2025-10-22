@@ -27,6 +27,7 @@
             int PlayerTotal = 0;
             float Money = 100;
             float BetAmout;
+            int deckIndex;
 
             // Shuffeling the games deck
             gameDeck.shuffleDeck();
@@ -53,10 +54,10 @@
                 PlayerTotal = Player1Hand.ElementAt(0).getValue() + Player1Hand.ElementAt(1).getValue();
 
                 // looping and removing the first card 
-                for (int i = 0; i < 4; i++)
-                {
-                    playingDeck.RemoveAt(i);
-                }
+                //for (int i = 0; i < 4; i++)
+                //{
+                //    playingDeck.RemoveAt(i);
+                //}
                 // Displaying the UI for the player and dealers hand
                 Console.WriteLine("You have $" + Money + " Dollars");
                 Console.WriteLine("How much would you like to bet? ");
@@ -114,8 +115,11 @@
                 // If the player wants to hit and isnt over 21 give an extra card then ask again
                 while (userInput.Equals("H") && PlayerTotal < 21 && !isRoundOver)
                 {
-                    Player1Hand.Add(playingDeck.ElementAt(0));
-                    PlayerTotal = PlayerTotal + playingDeck.ElementAt(0).getValue();
+                    deckIndex = random.Next(0,52);
+                    //Player1Hand.Add(playingDeck.ElementAt(0));
+                    //PlayerTotal = PlayerTotal + playingDeck.ElementAt(0).getValue();
+                    Player1Hand.Add(playingDeck.ElementAt(deckIndex));
+                    PlayerTotal = PlayerTotal + playingDeck.ElementAt(deckIndex).getValue();
                     printList(Player1Hand);
                     Console.WriteLine("Your new total is : " + PlayerTotal);
 
@@ -134,8 +138,11 @@
                 // If they stand the dealer checks if their total is under 17 and adds another card until it is or busts
                 while (userInput.Equals("S") && dealerTotal < 17 && !isRoundOver)
                 {
-                    DealerHand.Add(playingDeck.ElementAt(0));
-                    dealerTotal = dealerTotal + playingDeck.ElementAt(0).getValue();
+                    deckIndex = random.Next(0, 52);
+                    //DealerHand.Add(playingDeck.ElementAt(0));
+                    //dealerTotal = dealerTotal + playingDeck.ElementAt(0).getValue();
+                    DealerHand.Add(playingDeck.ElementAt(deckIndex));
+                    dealerTotal = dealerTotal + playingDeck.ElementAt(deckIndex).getValue();
                     Console.Write("The dealers new cards are: ");
                     printList(DealerHand);
                     Console.WriteLine("The dealers total is : " + dealerTotal);
